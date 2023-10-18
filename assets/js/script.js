@@ -8,11 +8,13 @@ var savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
 
 function updateSavedCitiesList() {
     var searchList = document.getElementById("searchList");
+
     searchList.innerHTML = "";
 
     // using Set here will not allow duplicate entries into the string array of saved cities
     var uniqueCities = new Set(savedCities);
 
+    // for all unique cities searches, create a list item on the html with the city name
     uniqueCities.forEach(function(savedCity) {
         var li = document.createElement("li");
         li.textContent = savedCity;
@@ -24,12 +26,14 @@ function updateSavedCitiesList() {
     });
 }
 
+// run the function to update the list
 updateSavedCitiesList();
 
 getWeatherButton.addEventListener("click", function () {
     // Get the user's input from the input field
     var city = cityInput.value;
 
+    // clearing search bar after use
     cityInput.value = "";
 
     // only adding an entry if that entry is not already included in the local storage
@@ -47,6 +51,7 @@ getWeatherButton.addEventListener("click", function () {
 
     var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
 
+    // upon running the api request, return data or throw an error, determined by the response status
     fetch(currentWeatherURL)
       .then(function (response) {
         if (!response.ok) {
@@ -84,12 +89,9 @@ getWeatherButton.addEventListener("click", function () {
           })
           .then(function (forecastData) {
             // Process and display the 5-day forecast
-            // You will need to loop through the forecastData list
-            // and extract the relevant forecast information.
-            // For example, the temperature, description, and date for each day.
 
-            // Display the forecast data in the "forecastInfo" element
             var forecastHtml = "";
+            // creating a blank array to put information inside
             var processedDates = [];
 
             // Loop through the forecast data (assuming it's an array)
